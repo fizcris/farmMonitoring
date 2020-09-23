@@ -26,7 +26,7 @@ static boolean connectWifi(const char *ssid, const char *password) {
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.begin(ssid, password);
-  displayString(0, 0, "Connecting to WiFi...");
+  displayString(0, 1, "Connecting to WiFi...");
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {
@@ -53,7 +53,7 @@ static void displayConnectionStatus() {
     displayString(0, 2, "IP address:");
     displayString(0,3, String(WiFi.localIP()).c_str());
   } else {
-    displayString(0, 0, "Connection failed.");
+    displayString(0, 1, "Connection failed.");
   }
 }
 
