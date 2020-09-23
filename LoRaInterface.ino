@@ -11,9 +11,13 @@
 // LoRa Settings
 
 //#define ENA_TRANSMIT
+//#define USE_SPREAD_FACTOR 
 
-#define USE_SPREAD_FACTOR 
+
+
+#ifdef USE_SPREAD_FACTOR 
 static int _spreadFactor = MIN_SPREAD_FACTOR;
+#endif
 
 #ifdef ENA_TRANSMIT
 // transmission parameters
