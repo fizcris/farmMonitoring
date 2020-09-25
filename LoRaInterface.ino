@@ -57,7 +57,7 @@ int rssi()
 static void onReceive(int packetSize)
 {
   // Keep this short and sweet - it's an interrupt service routine
-  digitalWrite(25, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);
   // Copy LoRa payload into buffer
   _payloadBuffer = "";
   while (LoRa.available())
@@ -66,7 +66,7 @@ static void onReceive(int packetSize)
   }
   // set flag to say there's data ready
   _receivedFlag = true;
-  digitalWrite(25, LOW);
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 #ifdef ENA_TRANSMIT

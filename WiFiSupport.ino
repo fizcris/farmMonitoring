@@ -17,7 +17,8 @@ static const char *_password = NULL;
 
 // connect to wifi – returns true if successful or false if not
 //
-static boolean connectWifi(const char *ssid, const char *password) {
+static boolean connectWifi(const char *ssid, const char *password)
+{
   boolean success = true;
   int i = 0;
 
@@ -29,9 +30,11 @@ static boolean connectWifi(const char *ssid, const char *password) {
   displayString(0, 1, "Connecting to WiFi...");
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED)
+  {
     delay(500);
-    if (i > 10) {
+    if (i > 10)
+    {
       success = false;
       break;
     }
@@ -40,41 +43,50 @@ static boolean connectWifi(const char *ssid, const char *password) {
   return success;
 }
 
-bool isWiFiConnected() {
+bool isWiFiConnected()
+{
   return WiFi.status() == WL_CONNECTED;
 }
 
-
-static void displayConnectionStatus() {
+static void displayConnectionStatus()
+{
   clearDisplay();
-  if (isWiFiConnected()) {
+  if (isWiFiConnected())
+  {
     displayString(0, 0, "Connected to:");
     displayString(0, 1, _ssid);
     displayString(0, 2, "IP address:");
-    displayString(0,3, String(WiFi.localIP()).c_str());
-  } else {
+    displayString(0, 3, String(WiFi.localIP()).c_str());
+  }
+  else
+  {
     displayString(0, 1, "Connection failed.");
   }
 }
 
-
-void initWiFi(const char *ssid, const char *password) {
-  if (connectWifi(ssid, password)) {
+void initWiFi(const char *ssid, const char *password)
+{
+  if (connectWifi(ssid, password))
+  {
     _ssid = ssid;
     _password = password;
     Serial.print("Connected to ");
     Serial.println(ssid);
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
-  } else {
+  }
+  else
+  {
     Serial.println("Connection failed.");
   }
   displayConnectionStatus();
   delay(1000);
 }
 
-void checkWiFiStatus() {
-  if (!isWiFiConnected() && _ssid && _password) {
+void checkWiFiStatus()
+{
+  if (!isWiFiConnected() && _ssid && _password)
+  {
     connectWifi(_ssid, _password);
     displayConnectionStatus();
     delay(1000);

@@ -13,8 +13,8 @@
 #include "LoRaInterface.h"
 
 // WiFi credentials
-#define WIFI_SSID "vodafone3B00"
-#define WIFI_PASSWORD "CasaAlonso"
+#define WIFI_SSID "+++++"
+#define WIFI_PASSWORD "+++++"
 
 // MQTT Broker info
 // Define either an IP address...
@@ -25,14 +25,29 @@
 // checkAndForwardPackets()
 // This is the core function that checks for received LoRa packets and forwards the contents on to MQTT
 //
+
+char data[MAX_LORA_PAYLOAD + 1] = "";
+const char delim[2] = "/";
 static void checkAndForwardPackets()
 {
+  Serial.println("checkAndForwardPackets");
   // check for received data
   String *rxPacketString = checkRxBuffer();
   if (rxPacketString)
   {
-    // forward packet content to MQTT
     const char *msg = rxPacketString->c_str();
+    strcpy(data, msg);
+
+    int init_size = strlen(data);
+    char *ptr = strtok(data, delim);
+
+    while (ptr != NULL)
+    {
+      Serial.println(ptr);
+      ptr = strtok(NULL, delim);
+        }
+
+    Serial.println();
 
     publishMQTT(msg);
 
@@ -41,11 +56,10 @@ static void checkAndForwardPackets()
 
     clearDisplay();
     displayString(0, 0, "received msg: ");
-    displayString(8, 0, msg);
+    displayString(0, 1, msg);
     displayRssi(rssi());
   }
 }
-
 // Arduino main hooks
 
 void setup()

@@ -14,6 +14,6 @@ void displaySpreadFactor(int sf) {
 }
 
 void displayRssi(int rssi) {
-  displayString(0, 2, "RSSI:         ");
-  displayString(6, 2, String(rssi, DEC).c_str());
+  displayString(0, 4, "RSSI:         ");
+  displayString(6, 4, String(rssi, DEC).c_str());
 }
