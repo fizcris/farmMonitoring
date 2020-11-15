@@ -36,12 +36,12 @@ sensorDict mySensorDictArr[]{
     {5, "tempFR", "analog12", "12", "00"},
     {6, "tempFL", "analog12", "13", "00"},
     {7, "tempRR", "analog12", "2", "00"},
-    {8, "tempRL", "analog12", "0", "00"},
+    {8, "tempRL", "analog12", "25", "00"},
 };
 
 double *outputArray; // Pointer to output array
 
-//Function to read the inputs
+//Function to increase analogread() accuracy of ESP32
 
 double readVoltage(byte pin){
   double reading = analogRead(pin); // Reference voltage is 3v3 so maximum reading is 3v3 = 4095 in range 0 to 4095
@@ -52,6 +52,7 @@ double readVoltage(byte pin){
 } // Added an improved polynomial, use either, comment out as required
 }
 
+//Function to read inputs
 void readInput(sensorDict *sensorX){
   if (sensorX->sensorType.equals(String("digital"))){
      sensorX->value = digitalRead(sensorX->pinNumber.toInt());
@@ -67,12 +68,12 @@ void setup()
   Heltec.display->init();
   Heltec.display->setContrast(255);
   Heltec.display->setFont(ArialMT_Plain_10);
+  Heltec.display->flipScreenVertically();
 
   Serial.begin(115200);
 }
 
 void loop()
-
 {
   readInput(&mySensorDictArr[sensorNum]); // Updates de value of the sensor
   payload = String(user + "/" + facility + "/" + mySensorDictArr[sensorNum].sensorName + "/" +
@@ -81,7 +82,8 @@ void loop()
   Heltec.display->clear();
   Heltec.display->drawString(0, 0, "Sending packet: ");
   Heltec.display->drawString(90, 0, String(sensorNum));
-  Heltec.display->drawString(0, 10, payload);
+  Heltec.display->drawString(0, 10, String("Pin number: ") + String(mySensorDictArr[sensorNum].pinNumber));
+  Heltec.display->drawString(0, 20, payload);
   Heltec.display->display();
 
   // send packet
@@ -96,10 +98,7 @@ void loop()
   LoRa.print(payload);
   LoRa.endPacket();
 
-  digitalWrite(LED, HIGH); // turn the LED on (HIGH is the voltage level)
-  delay(100);              // wait for a second
-  digitalWrite(LED, LOW);  // turn the LED off by making the voltage LOW
-  delay(100);
+  delay(10);
 
   sensorNum++;
   if (sensorNum >= sizeof(mySensorDictArr) / sizeof(sensorDict))
