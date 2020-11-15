@@ -19,29 +19,36 @@ static const char *_password = NULL;
 //
 static boolean connectWifi(const char *ssid, const char *password)
 {
-  boolean success = true;
+  boolean success = false;
   int i = 0;
+  char str[100];
+
 
   WiFi.disconnect(true);
   delay(500);
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.begin(ssid, password);
-  displayString(0, 1, "Connecting to WiFi...");
+  
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED)
-  {
+  while (WiFi.status() != WL_CONNECTED){
+    
+    clearDisplay();
+    displayString(0, 1, "Connecting to WiFi...");
+    displayString(0, 2, str);
     delay(500);
-    if (i > 10)
-    {
+    
+    if (i >= 10)    {
       success = false;
       break;
     }
     i++;
   }
+  if (WiFi.status() == WL_CONNECTED){success=true;}
   return success;
 }
+
 
 bool isWiFiConnected()
 {
@@ -56,7 +63,7 @@ static void displayConnectionStatus()
     displayString(0, 0, "Connected to:");
     displayString(0, 1, _ssid);
     displayString(0, 2, "IP address:");
-    displayString(0, 3, String(WiFi.localIP()).c_str());
+    displayString(0, 3, WiFi.localIP().toString().c_str());
   }
   else
   {

@@ -13,7 +13,7 @@
 #include "LoRaInterface.h"
 
 // WiFi credentials
-#define WIFI_SSID "+++++"
+#define WIFI_SSID "+++++++"
 #define WIFI_PASSWORD "+++++"
 
 // MQTT Broker info
@@ -45,7 +45,7 @@ static void checkAndForwardPackets()
     {
       Serial.println(ptr);
       ptr = strtok(NULL, delim);
-        }
+    }
 
     Serial.println();
 
@@ -76,15 +76,20 @@ void setup()
   displayString(0, 0, "Initialising Gateway...");
 
   // Initialise wifi connection
-  initWiFi(WIFI_SSID, WIFI_PASSWORD);
+
+  while (!isWiFiConnected())
+  {
+    initWiFi(WIFI_SSID, WIFI_PASSWORD);
+    delay(100);
+  }
 
   // Configure LoRa interface
   configureLoRa();
 
-  if (isWiFiConnected())
-  {
-    connectToMQTTServer(MQTT_SERVER, 1883);
-  }
+  Serial.println("Wifi connected");
+  Serial.println("Trying to connect to MQTT server");
+  connectToMQTTServer(MQTT_SERVER, 1883);
+
   Serial.println("setup() done");
 }
 
