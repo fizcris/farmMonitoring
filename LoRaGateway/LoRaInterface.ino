@@ -32,7 +32,7 @@ static String _payloadBuffer = "";
 
 void configureLoRa()
 {
-  Serial.println("configureLoRa()");
+  Serial.println("Configure LoRa interface");
 #ifdef ENA_TRANSMIT
   LoRa.setTxPowerMax(MAX_TX_POWER);
 #endif
@@ -41,6 +41,7 @@ void configureLoRa()
 #endif
   LoRa.onReceive(onReceive);
   LoRa.receive();
+  Serial.println("LoRA interface configured");
 }
 
 // LoRa receiver

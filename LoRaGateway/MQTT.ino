@@ -22,6 +22,7 @@ static const char *_topic = "env/node1/temp";
 // Instantiate the MQTT PubSubClient (requires a WiFiClient which is not used anywhere else)
 static WiFiClient _wifiClient;
 static PubSubClient _mqttClient(_wifiClient);
+char str[100];
 
 // MQTT Setup
 
@@ -30,6 +31,10 @@ static PubSubClient _mqttClient(_wifiClient);
 void connectToMQTTServer(IPAddress addr, uint16_t port)
 {
   _mqttClient.setServer(addr, port);
+  sprintf(str, "Trying to connecto to MQTT server on:");
+  displayString(0, 5, str);
+  sprintf(str, "%s : %d", addr.toString().c_str(), port);
+  displayString(0, 6, str);
   connectMQTT();
 }
 
@@ -38,6 +43,9 @@ void connectToMQTTServer(IPAddress addr, uint16_t port)
 void connectToMQTTServer(const char *host, uint16_t port)
 {
   _mqttClient.setServer(host, port);
+  clearDisplay();
+  sprintf(str, "MQTT Host: %s Port: %d", host, port);
+  displayString(0, 5, str);
   connectMQTT();
 }
 
@@ -50,13 +58,16 @@ void connectMQTT()
     String clientId = "LoRa-Gateway-";
     clientId += String((uint32_t)(_chipID >> 32));
     clientId += String((uint32_t)_chipID);
-    Serial.printf("MQTT connecting as client %s...\n", clientId.c_str());
+    Serial.printf("MQTT connecting as client %s\n", clientId.c_str());
     // Attempt to connect
+
     if (_mqttClient.connect(clientId.c_str()))
     {
-      Serial.println("MQTT connected");
+      clearDisplay();
+      displayString(0, 5, "MQTT connected");
       // Once connected, publish an announcement...
       _mqttClient.publish(_topic, String(clientId + " connected").c_str());
+      clearDisplay();
     }
     else
     {

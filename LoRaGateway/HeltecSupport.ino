@@ -40,5 +40,6 @@ void displayString(int x, int y, const char *str)
   Heltec.display->drawString(x * 9, y * 9, str);
   Heltec.display->display();
 #endif
+  Serial.print("**** OLED Screen ****: ");
   Serial.println(str);
 }

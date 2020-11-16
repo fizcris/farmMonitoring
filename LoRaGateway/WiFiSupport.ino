@@ -23,32 +23,34 @@ static boolean connectWifi(const char *ssid, const char *password)
   int i = 0;
   char str[100];
 
-
   WiFi.disconnect(true);
   delay(500);
   WiFi.mode(WIFI_STA);
   WiFi.setAutoConnect(true);
   WiFi.begin(ssid, password);
-  
 
   // Wait for connection
-  while (WiFi.status() != WL_CONNECTED){
-    
+  while (WiFi.status() != WL_CONNECTED)
+  {
+    sprintf(str, "Attempt: %d", i);
     clearDisplay();
     displayString(0, 1, "Connecting to WiFi...");
     displayString(0, 2, str);
     delay(500);
-    
-    if (i >= 10)    {
+
+    if (i >= 10)
+    {
       success = false;
       break;
     }
     i++;
   }
-  if (WiFi.status() == WL_CONNECTED){success=true;}
+  if (WiFi.status() == WL_CONNECTED)
+  {
+    success = true;
+  }
   return success;
 }
-
 
 bool isWiFiConnected()
 {
@@ -67,7 +69,8 @@ static void displayConnectionStatus()
   }
   else
   {
-    displayString(0, 1, "Connection failed.");
+    clearDisplay();
+    displayString(0, 1, "Connection to WIFI failed.");
   }
 }
 
@@ -80,7 +83,7 @@ void initWiFi(const char *ssid, const char *password)
     Serial.print("Connected to ");
     Serial.println(ssid);
     Serial.print("IP address: ");
-    Serial.println(WiFi.localIP());
+    Serial.println(WiFi.localIP().toString().c_str());
   }
   else
   {

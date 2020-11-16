@@ -18,7 +18,7 @@
 
 // MQTT Broker info
 // Define either an IP address...
-#define MQTT_SERVER IPAddress(192, 168, 0, 26)
+#define MQTT_SERVER IPAddress(192, 168, 0, 5)
 // ...or a hostname
 //#define MQTT_SERVER   "Mac-mini"
 
@@ -30,7 +30,7 @@ char data[MAX_LORA_PAYLOAD + 1] = "";
 const char delim[2] = "/";
 static void checkAndForwardPackets()
 {
-  Serial.println("checkAndForwardPackets");
+  displayString(0, 5, "Waiting for LoRA packets");
   // check for received data
   String *rxPacketString = checkRxBuffer();
   if (rxPacketString)
@@ -84,10 +84,9 @@ void setup()
   }
 
   // Configure LoRa interface
+
   configureLoRa();
 
-  Serial.println("Wifi connected");
-  Serial.println("Trying to connect to MQTT server");
   connectToMQTTServer(MQTT_SERVER, 1883);
 
   Serial.println("setup() done");
