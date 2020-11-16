@@ -22,6 +22,7 @@
 #define LED_BUILTIN (2) // standard ESP32
 #define BTN_PROG (0)
 #endif
+
 // Board support interface
 void configureBoard();
 

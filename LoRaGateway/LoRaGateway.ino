@@ -51,17 +51,14 @@ static void checkAndForwardPackets()
     displayRssi(rssi());
   }
 }
-// Arduino main hooks
 
+// Arduino main hooks
 void setup()
 {
   // initialise the board
   configureBoard();
 
   Serial.begin(115200);
-  Serial.println("setup()");
-
-  pinMode(LED_BUILTIN, OUTPUT);
 
   clearDisplay();
   displayString(0, 0, "Initialising Gateway...");
