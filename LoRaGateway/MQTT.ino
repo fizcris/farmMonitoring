@@ -8,17 +8,6 @@
 
 #include "WiFi.h"
 
-/*
-// MQTT Configuration
-// if you have a hostname set for the MQTT broker, you can use it here
-//const char *serverHostname = "mqtt-server";
-// otherwise you can use an IP address like this
-static const IPAddress serverIPAddress(192, 168, 0, 2);
-*/
-
-// the topic we want to use
-static const char *_topic = "env/node1/temp";
-
 // Instantiate the MQTT PubSubClient (requires a WiFiClient which is not used anywhere else)
 static WiFiClient _wifiClient;
 static PubSubClient _mqttClient(_wifiClient);

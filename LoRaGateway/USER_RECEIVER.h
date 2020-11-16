@@ -15,3 +15,6 @@
 #define MQTT_SERVER IPAddress(192, 168, 0, 5)
 // ...or a hostname
 //#define MQTT_SERVER   "Mac-mini"
+
+// Topic for MQTT
+static const char *_topic = "allNodes";
