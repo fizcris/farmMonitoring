@@ -9,22 +9,13 @@
 #include "Arduino.h"
 #include <PubSubClient.h>
 
+#include "USER_RECEIVER.h"
+
 #include "HAL.h"
 #include "LoRaInterface.h"
 
-// WiFi credentials
-#define WIFI_SSID "+++++++"
-#define WIFI_PASSWORD "+++++"
-
-// MQTT Broker info
-// Define either an IP address...
-#define MQTT_SERVER IPAddress(192, 168, 0, 5)
-// ...or a hostname
-//#define MQTT_SERVER   "Mac-mini"
-
 // checkAndForwardPackets()
 // This is the core function that checks for received LoRa packets and forwards the contents on to MQTT
-//
 
 char data[MAX_LORA_PAYLOAD + 1] = "";
 const char delim[2] = "/";

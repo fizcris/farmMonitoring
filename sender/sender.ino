@@ -10,6 +10,8 @@
 #include "heltec.h"
 #include "Arduino.h"
 
+#include "USER_SENDER.h"
+
 #define OLED_UPDATE_INTERVAL 500
 #define BAND 868E6 //LORA band e.g. 868E6,915E6
 
@@ -24,39 +26,29 @@ typedef struct
 
 int sensorNum;
 String payload;
-const String user = "Lina";
-const String facility = "Nave1";
-
-sensorDict mySensorDictArr[]{
-    {0, "Alarm", "digital", "17", "00"},
-    {1, "windowFR", "analog12", "36", "00"},
-    {2, "windowFL", "analog12", "37", "00"},
-    {3, "windowRR", "analog12", "38", "00"},
-    {4, "windowRL", "analog12", "39", "00"},
-    {5, "tempFR", "analog12", "12", "00"},
-    {6, "tempFL", "analog12", "13", "00"},
-    {7, "tempRR", "analog12", "2", "00"},
-    {8, "tempRL", "analog12", "25", "00"},
-};
-
 double *outputArray; // Pointer to output array
 
 //Function to increase analogread() accuracy of ESP32
-
-double readVoltage(byte pin){
+double readVoltage(byte pin)
+{
   double reading = analogRead(pin); // Reference voltage is 3v3 so maximum reading is 3v3 = 4095 in range 0 to 4095
-  if (reading < 1 || reading >= 4095){
+  if (reading < 1 || reading >= 4095)
+  {
     //return 0;
     // return -0.000000000009824 * pow(reading,3) + 0.000000016557283 * pow(reading,2) + 0.000854596860691 * reading + 0.065440348345433;
     return -0.000000000000016 * pow(reading, 4) + 0.000000000118171 * pow(reading, 3) - 0.000000301211691 * pow(reading, 2) + 0.001109019271794 * reading + 0.034143524634089;
-} // Added an improved polynomial, use either, comment out as required
+  } // Added an improved polynomial, use either, comment out as required
 }
 
 //Function to read inputs
-void readInput(sensorDict *sensorX){
-  if (sensorX->sensorType.equals(String("digital"))){
-     sensorX->value = digitalRead(sensorX->pinNumber.toInt());
-} else if (sensorX->sensorType.equals(String("analog12"))) {
+void readInput(sensorDict *sensorX)
+{
+  if (sensorX->sensorType.equals(String("digital")))
+  {
+    sensorX->value = digitalRead(sensorX->pinNumber.toInt());
+  }
+  else if (sensorX->sensorType.equals(String("analog12")))
+  {
     sensorX->value = readVoltage(sensorX->pinNumber.toInt());
   }
 }
