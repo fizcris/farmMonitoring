@@ -15,16 +15,10 @@
 #define OLED_UPDATE_INTERVAL 500
 #define BAND 868E6 //LORA band e.g. 868E6,915E6
 
-typedef struct
-{
-  uint8_t sensorNumber;
-  String sensorName;
-  String sensorType;
-  String pinNumber;
-  String value;
-} sensorDict;
+
 
 int sensorNum;
+int row;
 String payload;
 double *outputArray; // Pointer to output array
 
@@ -61,6 +55,10 @@ void setup()
   Heltec.display->setContrast(255);
   Heltec.display->setFont(ArialMT_Plain_10);
   Heltec.display->flipScreenVertically();
+  Heltec.display->clear();
+
+  Heltec.display->drawString(40, 0, String(user + "/" + facility ));
+  Heltec.display->display();
 
   Serial.begin(115200);
 }
@@ -71,11 +69,8 @@ void loop()
   payload = String(user + "/" + facility + "/" + mySensorDictArr[sensorNum].sensorName + "/" +
                    mySensorDictArr[sensorNum].value);
 
-  Heltec.display->clear();
-  Heltec.display->drawString(0, 0, "Sending packet: ");
-  Heltec.display->drawString(90, 0, String(sensorNum));
-  Heltec.display->drawString(0, 10, String("Pin number: ") + String(mySensorDictArr[sensorNum].pinNumber));
-  Heltec.display->drawString(0, 20, payload);
+  Heltec.display->drawString(0, 10 + 8*row, String(mySensorDictArr[sensorNum].sensorName) + String(": ") + String(mySensorDictArr[sensorNum].value));
+  //Heltec.display->drawString(0, 50, "Sending packet pin: " + String(mySensorDictArr[sensorNum].pinNumber) );
   Heltec.display->display();
 
   // send packet
@@ -91,8 +86,14 @@ void loop()
   LoRa.endPacket();
 
   delay(10);
-
+  
   sensorNum++;
+  row++;
+  if (row>5){
+    row=0;
+    Heltec.display->clear();
+    Heltec.display->drawString(40, 0, String(user + "/" + facility ));
+    }
   if (sensorNum >= sizeof(mySensorDictArr) / sizeof(sensorDict))
   {
     sensorNum = 0;

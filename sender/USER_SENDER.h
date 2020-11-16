@@ -9,6 +9,16 @@
 const String user = "Lina";
 const String facility = "Nave1";
 
+typedef struct
+{
+  uint8_t sensorNumber;
+  String sensorName;
+  String sensorType;
+  String pinNumber;
+  String value;
+} sensorDict;
+
+
 sensorDict mySensorDictArr[]{
     {0, "Alarm", "digital", "17", "00"},
     {1, "windowFR", "analog12", "36", "00"},
