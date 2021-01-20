@@ -21,12 +21,13 @@ typedef struct
 
 sensorDict mySensorDictArr[]{
     {0, "Alarm", "digital", "17", "00"},
-    {1, "windowFR", "analog12", "36", "00"},
-    {2, "windowFL", "analog12", "37", "00"},
-    {3, "windowRR", "analog12", "38", "00"},
-    {4, "windowRL", "analog12", "39", "00"},
-    {5, "tempFR", "analog12", "12", "00"},
-    {6, "tempFL", "analog12", "13", "00"},
-    {7, "tempRR", "analog12", "2", "00"},
-    {8, "tempRL", "analog12", "25", "00"},
+    {1, "Alarm2", "digital", "23", "00"},
+    {2, "windowFR", "analog12", "36", "00"},
+    {3, "windowFL", "analog12", "37", "00"},
+    {4, "windowRR", "analog12", "38", "00"},
+    {5, "windowRL", "analog12", "39", "00"},
+    {6, "tempFR", "analog12", "12", "00"},
+    {7, "tempFL", "analog12", "13", "00"},
+    {8, "tempRR", "analog12", "2", "00"},
+    {9, "tempRL", "analog12", "25", "00"},
 };
