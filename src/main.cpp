@@ -28,19 +28,9 @@ char data[MAX_LORA_PAYLOAD + 1] = "";
 char topic[12] = "allTopics";
 char senVal[12] = "";
 const char delim[2] = "/";
-static void checkAndForwardPackets()
-{
-  displayString(0, 5, "Waiting for LoRA packets");
-  // check for received data
-  String *rxPacketString = checkRxBuffer();
-  if (rxPacketString)
-  {
-    const char *msg = rxPacketString->c_str();
-    strcpy(data, msg);
 
-    // Parse msg to split topic and data
+static void splitMsgData(){
     //int init_size = strlen(data);
-    //TODO: Create a function to split data
     char *ptr = strtok(data, delim);
     int callNum = 0;
 
@@ -60,6 +50,21 @@ static void checkAndForwardPackets()
       ptr = strtok(NULL, delim);
       callNum++;
     }
+}
+
+
+static void checkAndForwardPackets()
+{
+  displayString(0, 5, "Waiting for LoRA packets");
+  // check for received data
+  String *rxPacketString = checkRxBuffer();
+  if (rxPacketString)
+  {
+    const char *msg = rxPacketString->c_str();
+    strcpy(data, msg);
+
+    // Parse msg to split topic and data
+    splitMsgData();
 
     Serial.println();
 
