@@ -1,0 +1,26 @@
+/*
+ * config.h
+ * 
+ * User data
+ * 
+ * (c) 2020 Cristian Alonso. All Rights Reserved.
+ */
+
+#ifndef CONFIG_H
+#define CONFIG_H
+
+// WiFi credentials
+#define WIFI_SSID "+++++++++++++++++"
+#define WIFI_PASSWORD "++++++++++++++++"
+
+// MQTT Broker info
+// Define either an IP address...
+#define MQTT_SERVER IPAddress(192, 168, 0, 55)
+#define MQTT_PORT 1883
+
+// ...or a hostname
+//#define MQTT_SERVER   "Mac-mini"
+
+//#define MQTT_USER "enter_your_MQTT_user"
+//#define MQTT_PASS "enter_your_MQTT_password"
+#endif
