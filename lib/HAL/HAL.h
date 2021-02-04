@@ -7,6 +7,7 @@
  */
 
 #include <stdint.h>
+#include <config.h>
 #define HELTEC
 
 #ifdef HELTEC

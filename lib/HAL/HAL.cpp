@@ -8,7 +8,7 @@
 
 #include <heltec.h>
 #include <HAL.h>
-#define HELTEC
+
 
 // Board configuration
 // Configure specific vendor boards here

@@ -5,13 +5,14 @@
  * 
  * (c) 2019 Lee Dowthwaite. All Rights Reserved.
  */
-#define HELTEC
+
 #include <config.h>
 
 #include <Arduino.h>
 #include <HAL.h>
 #include <PubSubClient.h>
 #include <heltec.h>
+
 
 
 #include <DisplayUI.h>
@@ -24,6 +25,8 @@
 // This is the core function that checks for received LoRa packets and forwards the contents on to MQTT
 
 char data[MAX_LORA_PAYLOAD + 1] = "";
+char topic[12] = "allTopics";
+char senVal[12] = "";
 const char delim[2] = "/";
 static void checkAndForwardPackets()
 {
@@ -35,18 +38,32 @@ static void checkAndForwardPackets()
     const char *msg = rxPacketString->c_str();
     strcpy(data, msg);
 
+    // Parse msg to split topic and data
     //int init_size = strlen(data);
+    //TODO: Create a function to split data
     char *ptr = strtok(data, delim);
+    int callNum = 0;
 
     while (ptr != NULL)
     {
-      Serial.println(ptr);
+        if(callNum <1){
+            strcpy(topic,ptr);
+        } else if (callNum <2) {
+            strcat(topic,"/");
+            strcat(topic,ptr);
+        } else if (callNum <3) {
+            strcpy(senVal,ptr);
+        } else if (callNum <4) {
+            strcat(senVal,"/");
+            strcat(senVal,ptr);
+        }
       ptr = strtok(NULL, delim);
+      callNum++;
     }
 
     Serial.println();
 
-    publishMQTT(msg);
+    publishMQTT(topic, senVal);
 
     Serial.print("rx packet: msg: ");
     Serial.println(msg);
@@ -78,11 +95,10 @@ void setup()
   }
 
   // Configure LoRa interface
-
   configureLoRa();
-
+  // Connect to MQTT server
   connectToMQTTServer(MQTT_SERVER, 1883);
-
+  
   Serial.println("setup() done");
 }
 
@@ -98,5 +114,5 @@ void loop()
   // MQTT housekeeping
   updateMQTT();
 
-  delay(1000);
+  delay(500);
 }
